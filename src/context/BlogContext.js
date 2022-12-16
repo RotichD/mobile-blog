@@ -42,7 +42,7 @@ const editBlogPost = (dispatch) => {
     });
     if (callback) {
       callback();
-    }
+    } 
   };
 };
 
