@@ -11,9 +11,11 @@ const ShowScreen = ({ navigation }) => {
   );
 
   return (
-    <View>
-      <Text>{blogPost.title}</Text>
-      <Text>{blogPost.content}</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>{blogPost.title}</Text>
+      <View style={styles.textWrapper}>
+        <Text style={styles.content}>{blogPost.content}</Text>
+      </View>
     </View>
   );
 };
@@ -40,6 +42,27 @@ const styles = StyleSheet.create({
   icon: {
     fontSize: 30,
     marginRight: 10,
+  },
+  title: {
+    alignSelf: 'center',
+    fontSize: 22,
+  },
+  content: {
+    fontSize: 18,
+    
+    paddingVertical: 20,
+    paddingHorizontal: 5,
+  },
+  textWrapper: {
+    marginTop: 10,
+    backgroundColor: '#ced4da',
+    borderRadius: 5,
+  },
+  container: {
+    marginTop: 10,
+    marginHorizontal: 10,
+    marginBottom: 100,
+    paddingHorizontal: 5,
   },
 });
 
