@@ -1,24 +1,58 @@
-import React, { useContext } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
-import BlogContext from '../context/BlogContext';
+import React, { useContext, useEffect } from 'react';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Context } from '../context/BlogContext';
+import { Ionicons } from '@expo/vector-icons';
 
-const IndexScreen = () => {
-  const blogPosts = useContext(BlogContext);
+import BlogListItem from '../components/BlogListItem';
+
+const IndexScreen = ({ navigation }) => {
+  const { state, deleteBlogPost, getBlogPosts } = useContext(Context);
+  useEffect(() => {
+    getBlogPosts();
+
+    const listener = navigation.addListener('didFocus', () => {
+      getBlogPosts();
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   return (
     <View>
-      <Text> Index Screen </Text>
       <FlatList
-        data={blogPosts}
-        keyExtractor={(blogPost) => blogPost.title}
+        data={state}
+        keyExtractor={(blogPost) => blogPost.id}
         renderItem={({ item }) => {
-          return <Text>{item.title}</Text>;
+          return (
+            <BlogListItem
+              deleteBlogPost={deleteBlogPost}
+              item={item}
+              navigation={navigation}
+            />
+          );
         }}
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+IndexScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight: () => (
+      <TouchableOpacity onPress={() => navigation.navigate('Create')}>
+        <Ionicons name='create-outline' style={styles.icon} color='black' />
+      </TouchableOpacity>
+    ),
+  };
+};
+
+const styles = StyleSheet.create({
+  icon: {
+    fontSize: 30,
+    marginRight: 10,
+  },
+});
 
 export default IndexScreen;
